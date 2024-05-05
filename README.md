@@ -1,5 +1,4 @@
 # AmplitudeModulationDemodulation
-This repository contains the project we did for the systems and signals course. 
 
 Amplitude Modülasyon ve Demodülasyon (AM) bir iletişim tekniğidir. Bu teknik, bir taşıyıcı sinyalin genliğinin (amplitüd) modüle edilen sinyalinin özelliklerine bağlı olarak değiştirilmesi prensibine dayanır.
 
