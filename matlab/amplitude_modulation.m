@@ -1,36 +1,49 @@
-% AM Modülasyonu
+% Ses sinyali oluşturma
+Fs = 1000; % Örnekleme frekansı (Hz)
+t = 0:1/Fs:1; % 1 saniye boyunca örnekleme
+f1 = 5; % Temel frekans (Hz)
+f2 = 20; % İkinci harmonik frekans (Hz)
+message_signal = sin(2*pi*f1*t) + sin(2*pi*f2*t); % Sinüzoidal ses sinyali
 
-% Taşıyıcı sinyal özellikleri
-carrier_freq = 1000; % Taşıyıcı frekansı (Hz)
+% Taşıyıcı sinyal oluşturma
+carrier_freq = 100; % Taşıyıcı frekansı (Hz)
 carrier_amplitude = 1; % Taşıyıcı genliği
-
-% Mesaj sinyal özellikleri
-message_freq = 100; % Mesaj frekansı (Hz)
-message_amplitude = 0.5; % Mesaj genliği
-
-% Zaman vektörü
-t = 0:0.001:1; % 1 saniye boyunca örnekleme
-
-% Taşıyıcı sinyal
-carrier_signal = carrier_amplitude * sin(2 * pi * carrier_freq * t);
-
-% Mesaj sinyali
-message_signal = message_amplitude * sin(2 * pi * message_freq * t);
+carrier_signal = carrier_amplitude * cos(2*pi*carrier_freq*t); % Sinüzoidal taşıyıcı sinyal
 
 % AM modülasyonu
-modulated_signal = (1 + message_signal) .* carrier_signal;
+modulated_signal = (1 + 0.5*message_signal) .* carrier_signal; % AM modülasyonu
+
+% AM demodülasyonu
+demodulated_signal = abs(modulated_signal) - 1; % Doğrultma işlemi
+[b, a] = butter(6, 0.05); % Düşükgeçiren filtre
+filtered_signal = filter(b, a, demodulated_signal); % Filtreleme
 
 % Sinyalleri görselleştirme
-subplot(3,1,1);
+figure;
+subplot(4,1,1);
+plot(t, message_signal);
+title('Orijinal Ses Sinyali');
+xlabel('Zaman (s)');
+ylabel('Genlik');
+ylim([-2 2]);
+
+subplot(4,1,2);
 plot(t, carrier_signal);
 title('Taşıyıcı Sinyal');
+xlabel('Zaman (s)');
+ylabel('Genlik');
+ylim([-2 2]);
 
-subplot(3,1,2);
-plot(t, message_signal);
-title('Mesaj Sinyali');
-
-subplot(3,1,3);
+subplot(4,1,3);
 plot(t, modulated_signal);
 title('AM Modülasyonu');
-
 xlabel('Zaman (s)');
+ylabel('Genlik');
+ylim([-2 2]);
+
+subplot(4,1,4);
+plot(t, filtered_signal);
+title('AM Demodülasyonu');
+xlabel('Zaman (s)');
+ylabel('Genlik');
+ylim([-2 2]);
